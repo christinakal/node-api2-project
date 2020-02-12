@@ -2,6 +2,7 @@ const express = require("express");
 
 const Posts = require("../data/db.js"); // < fix the path
 
+
 const router = express.Router(); // mind the uppercase R
 
 
@@ -22,6 +23,35 @@ router.get("/", (req, res) => {
         });
       });
   });
+
+router.get('/:id', (req,res) => {
+    Posts.findById(req.params.id)
+    .then(post => {
+        if (post) {
+            res.status(200).json(post);
+        } else {
+            res.status(404).json({ message: "Post not found"});
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "Error retrieving the post"});
+    });
+});
+
+router.get('/:id/comments', (req,res) => {
+    const { id } = req.params;
+
+    Posts.findPostComments(id)
+    .then(comment => {
+        res.status(200).json(comment);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "Error retrieving the post"});
+    });
+});
+
 
 // mind the S in exportS
 module.exports = router; // same as below
