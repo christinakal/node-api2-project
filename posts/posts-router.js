@@ -68,6 +68,23 @@ router.post("/", (req, res) => {
       });
   });
 
+  router.post("/:id/comments", (req, res) => {
+    const { id } = req.params;
+    const comment = { ...req.body, post_id: id };
+
+    Posts.insertComment(comment)
+      .then(comment => {
+        res.status(201).json(comment);
+      })
+      .catch(error => {
+        // log error to database
+        console.log(error);
+        res.status(500).json({
+          message: "Sorry, we can't proceed",
+        });
+      });
+  });
+
 
 // mind the S in exportS
 module.exports = router; // same as below
