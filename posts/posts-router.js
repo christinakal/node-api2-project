@@ -1,8 +1,10 @@
 const express = require("express");
+var cors = require("cors");
 
 const Posts = require("../data/db.js"); // < fix the path
 
 const router = express.Router(); // mind the uppercase R
+router.use(cors());
 
 // --- GET REQUESTS ---
 router.get("/", (req, res) => {
